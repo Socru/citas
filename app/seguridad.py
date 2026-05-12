@@ -1,5 +1,7 @@
+
+import os
+from dotenv import load_dotenv
 from passlib.context import CryptContext
-#bcrypt para encriptar
 import jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
@@ -7,13 +9,15 @@ from sqlalchemy.orm import Session
 from . import database, models
 from fastapi.security import OAuth2PasswordBearer
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 #token key
-SECRET_KEY="CLAVE"
-ALGORITHM="HS256"
-ACCES_TOKEN_EXPIRE_MINUTES = 59
+load_dotenv()pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+# Leer secretos del .env (si no los encuentra, usa valores por defecto)
+SECRET_KEY = os.getenv("SECRET_KEY", "CLAVE_INSEGURA")
+ALGORITHM = os.getenv("ALGORITHM", "HS256")
+ACCES_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 59))
 
 #autorizar, fast api la ruta de token mediante login
 

@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from . import models
 from .database import engine
 from .routers import rutas
@@ -10,6 +11,14 @@ app = FastAPI(
     title="SaaS Citas API",
     description="API para gestión de citas por WhatsApp",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins["*"], #URL de front
+    allow_credentials=TRUE,
+    allow_methonds["*"], #permitir metodos Get, Post...
+    allow_headers=["*"], #headers
 )
 
 app.include_router(rutas.router)
